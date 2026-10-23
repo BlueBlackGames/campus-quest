@@ -1,8 +1,20 @@
 {
-  "name": "ovian",
-  "private": true,
+  "name": "campus-quest",
   "version": "0.0.0",
+  "private": true,
+  "description": "Webpage for me and friends",
+  "homepage": "https://github.com/BlueBlackGames/campus-quest#readme",
+  "bugs": {
+    "url": "https://github.com/BlueBlackGames/campus-quest/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlueBlackGames/campus-quest.git"
+  },
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "main": "eslint.config.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,7 +22,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.111.0",
+    "@supabase/supabase-js": "^2.118.0",
     "@tailwindcss/vite": "^4.3.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
