@@ -42,7 +42,7 @@ export default function Login({ onLogin }) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: window.location.origin, // ✅ must match Supabase config
+        redirectTo: "https://campusquests.netlify.app/", // ✅ must match Supabase config
       },
     });
     if (error) alert(error.message);
