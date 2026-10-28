@@ -9,21 +9,35 @@ export default function Login({ onLogin }) {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      alert(error.message);
-    } else {
-      <Home></Home>
-      onLogin(data.user);
-      
-      navigate("/");
+  e.preventDefault();
 
-    }
-  };
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  const user = data.user;
+
+  onLogin(user);
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("profile_completed")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile?.profile_completed) {
+    navigate("/profile");
+  } else {
+    navigate("/");
+  }
+};
+
 
   const handleGoogleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({

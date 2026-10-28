@@ -1,108 +1,346 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
 export default function Home() {
-  const [items, setItems] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [stats, setStats] = useState({
+    students: 0,
+    tasks: 0,
+    points: 0,
+    freelancers: 0,
+  });
 
-  const fetchProducts = async (pageNum = 1) => {
-    setLoading(true);
+  const [leaderboard, setLeaderboard] = useState([]);
+
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    fetchHomepageData();
+  }, []);
+
+  const fetchHomepageData = async () => {
     try {
-      const { data, error } = await supabase
-        .from("products")
-        .select("id, name, description, productimagelink, images, price, category")
-        .order("id", { ascending: true })
-        .range((pageNum - 1) * 8, pageNum * 8 - 1);
+      // Profiles
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("*");
 
-      if (error) throw error;
+      const totalStudents = profiles?.length || 0;
 
-      console.log("Fetched products:", data); // ✅ Debug log
-      setItems((prev) => [...prev, ...data]);
-      setPage(pageNum);
-    } catch (err) {
-      console.error("Supabase fetch error:", err.message);
-    } finally {
-      setLoading(false);
+      const totalPoints =
+        profiles?.reduce(
+          (sum, profile) =>
+            sum + (profile.points || 0),
+          0
+        ) || 0;
+
+      // Tasks
+      const { data: tasks } = await supabase
+        .from("tasks")
+        .select("id");
+
+      const totalTasks =
+        tasks?.length || 0;
+
+      // Freelancers
+      const freelancers =
+        profiles?.filter(
+          (profile) =>
+            profile.skills &&
+            profile.skills.length > 0
+        ).length || 0;
+
+      setStats({
+        students: totalStudents,
+        tasks: totalTasks,
+        points: totalPoints,
+        freelancers,
+      });
+
+      // Leaderboard
+      const { data: topUsers } =
+        await supabase
+          .from("profiles")
+          .select(
+            "full_name, points"
+          )
+          .order(
+            "points",
+            { ascending: false }
+          )
+          .limit(5);
+
+      setLeaderboard(topUsers || []);
+
+      // Freelance Jobs
+      const { data: jobsData } =
+        await supabase
+          .from("freelance_jobs")
+          .select("*")
+          .limit(3);
+
+      setJobs(jobsData || []);
+
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  // ✅ Initial load
-  useEffect(() => {
-    fetchProducts(1);
-  }, []);
-
-  // ✅ Infinite scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 200
-      ) {
-        if (!loading) fetchProducts(page + 1);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [page, loading]);
+  const categories = [
+    {
+      title: "Assignments",
+      icon: "📚",
+      desc: "Complete assignments and earn rewards.",
+    },
+    {
+      title: "Skill Development",
+      icon: "💻",
+      desc: "Coding, design and learning tasks.",
+    },
+    {
+      title: "Campus Events",
+      icon: "🎉",
+      desc: "Participate in events and competitions.",
+    },
+    {
+      title: "Freelancing",
+      icon: "🚀",
+      desc: "Work for students and earn points.",
+    },
+  ];
 
   return (
-    <div className="pt-20 min-h-screen text-white px-4 py-6">
-      {/* Discount Banner */}
-      <div className="bg-white/90 text-black text-center py-2 font-semibold rounded-md max-w-4xl mx-auto">
-        🎉 Summer Sale! Get up to 50% off on selected items — Limited time only!
-      </div>
+    <div className="min-h-screen text-white">
 
-      {/* Product Grid */}
-      <div className="p-6 grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 max-w-7xl mx-auto">
-        {items.map((item) => (
-          <div
-            key={item.id}
-            className="card rounded-lg shadow hover:scale-105 transition-transform"
-          >
-            <img
-              src={item.productimagelink}
-              alt={item.name}
-              className="w-full h-48 object-cover rounded-t-lg"
-            />
-            <div className="p-4 text-center">
-              <h3 className="text-white font-semibold">{item.name}</h3>
-              <p className="text-gray-300 text-sm mt-1">{item.description}</p>
-              <p className="text-xs text-gray-400">Category: {item.category}</p>
+      {/* HERO */}
+      <section className="max-w-7xl mx-auto px-4 py-16">
 
-              {/* Show gallery images if available */}
-              {item.images && item.images.length > 0 && (
-                <div className="mt-2 flex gap-2 overflow-x-auto">
-                  {item.images.map((img, i) => (
-                    <img
-                      key={i}
-                      src={img}
-                      alt={`${item.name} ${i}`}
-                      className="w-16 h-16 object-cover rounded"
-                    />
-                  ))}
-                </div>
-              )}
+        <div className="glass-card rounded-3xl p-10 text-center">
 
-              {item.price && (
-                <p className="text-yellow-400 font-bold mt-2">₹{item.price}</p>
-              )}
-              <button
-                onClick={() => navigate(`/product/${item.id}`, { state: item })}
-                className="mt-3 btn-white py-1 px-3 rounded"
-              >
-                View
-              </button>
-            </div>
+          <h1 className="text-5xl md:text-7xl font-bold text-yellow-400">
+            🎓 Campus Quest
+          </h1>
+
+          <p className="mt-6 text-xl text-gray-200">
+            Complete Tasks • Earn Points • Build Skills
+          </p>
+
+          <p className="mt-4 text-gray-300 max-w-3xl mx-auto">
+            A student-powered platform where
+            college students complete tasks,
+            freelance for others,
+            participate in events,
+            and climb the leaderboard.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4 mt-8">
+
+            <Link
+              to="/tasks"
+              className="bg-yellow-400 text-black px-6 py-3 rounded-xl font-bold"
+            >
+              Explore Tasks
+            </Link>
+
+            <Link
+              to="/profile"
+              className="border border-yellow-400 px-6 py-3 rounded-xl"
+            >
+              My Profile
+            </Link>
+
           </div>
-        ))}
-      </div>
 
-      {loading && (
-        <p className="text-center text-yellow-400 mt-4">Loading more...</p>
-      )}
+        </div>
+      </section>
+
+      {/* STATS */}
+
+      <section className="max-w-7xl mx-auto px-4">
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+          <div className="glass-card p-6 rounded-xl text-center">
+            <div className="text-4xl">
+              👨‍🎓
+            </div>
+
+            <h2 className="text-yellow-400 text-2xl font-bold mt-2">
+              {stats.students}
+            </h2>
+
+            <p>Students</p>
+          </div>
+
+          <div className="glass-card p-6 rounded-xl text-center">
+            <div className="text-4xl">
+              📌
+            </div>
+
+            <h2 className="text-yellow-400 text-2xl font-bold mt-2">
+              {stats.tasks}
+            </h2>
+
+            <p>Tasks</p>
+          </div>
+
+          <div className="glass-card p-6 rounded-xl text-center">
+            <div className="text-4xl">
+              ⭐
+            </div>
+
+            <h2 className="text-yellow-400 text-2xl font-bold mt-2">
+              {stats.points}
+            </h2>
+
+            <p>Points Earned</p>
+          </div>
+
+          <div className="glass-card p-6 rounded-xl text-center">
+            <div className="text-4xl">
+              🚀
+            </div>
+
+            <h2 className="text-yellow-400 text-2xl font-bold mt-2">
+              {stats.freelancers}
+            </h2>
+
+            <p>Freelancers</p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* CATEGORIES */}
+
+      <section className="max-w-7xl mx-auto px-4 py-20">
+
+        <h2 className="text-4xl text-center font-bold text-yellow-400 mb-10">
+          Explore Categories
+        </h2>
+
+        <div className="grid md:grid-cols-4 gap-6">
+
+          {categories.map((cat, index) => (
+            <div
+              key={index}
+              className="glass-card rounded-xl p-6 text-center"
+            >
+
+              <div className="text-5xl">
+                {cat.icon}
+              </div>
+
+              <h3 className="mt-4 text-yellow-400 font-bold text-xl">
+                {cat.title}
+              </h3>
+
+              <p className="mt-3 text-gray-300">
+                {cat.desc}
+              </p>
+
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FREELANCE JOBS */}
+
+      <section className="max-w-7xl mx-auto px-4">
+
+        <h2 className="text-4xl text-center text-yellow-400 font-bold mb-10">
+          🚀 Freelance Opportunities
+        </h2>
+
+        <div className="grid md:grid-cols-3 gap-6">
+
+          {jobs.map((job) => (
+
+            <div
+              key={job.id}
+              className="glass-card rounded-xl p-6"
+            >
+
+              <h3 className="text-xl font-bold">
+                {job.title}
+              </h3>
+
+              <p className="text-gray-300 mt-3">
+                {job.description}
+              </p>
+
+              <p className="mt-4 text-yellow-400 font-bold">
+                Reward:
+                {" "}
+                {job.reward_points}
+                {" "}
+                Points
+              </p>
+
+            </div>
+          ))}
+
+        </div>
+
+      </section>
+
+      {/* LEADERBOARD */}
+
+      <section className="max-w-5xl mx-auto px-4 py-20">
+
+        <h2 className="text-4xl text-center text-yellow-400 font-bold mb-10">
+          🏆 Top Students
+        </h2>
+
+        <div className="glass-card rounded-2xl overflow-hidden">
+
+          {leaderboard.map((student, index) => (
+
+            <div
+              key={index}
+              className="flex justify-between p-5 border-b border-white/10"
+            >
+
+              <span>
+                #{index + 1}
+                {" "}
+                {student.full_name}
+              </span>
+
+              <span className="text-yellow-400 font-bold">
+                {student.points || 0}
+                {" "}
+                pts
+              </span>
+
+            </div>
+
+          ))}
+        </div>
+      </section>
+
+      {/* FOOTER */}
+
+      <section className="pb-12 px-4">
+
+        <div className="glass-card p-8 rounded-2xl max-w-5xl mx-auto text-center">
+
+          <h2 className="text-3xl font-bold text-yellow-400">
+            Why Campus Quest?
+          </h2>
+
+          <div className="grid md:grid-cols-4 gap-6 mt-8">
+
+            <div>✅ Earn Rewards</div>
+            <div>✅ Build Portfolio</div>
+            <div>✅ Learn Skills</div>
+            <div>✅ Collaborate</div>
+
+          </div>
+        </div>
+
+      </section>
+
     </div>
   );
 }
