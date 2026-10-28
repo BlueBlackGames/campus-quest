@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
-import Home from "./Home";
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -43,7 +42,7 @@ export default function Login({ onLogin }) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: "https://ovianstore.netlify.app/", // ✅ must match Supabase config
+        redirectTo: window.location.origin, // ✅ must match Supabase config
       },
     });
     if (error) alert(error.message);
