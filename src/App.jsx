@@ -66,30 +66,33 @@ async (_event, session) => {
     await supabase.auth.signOut();
     setUser(null);
   };
+return (
+  <div className="app-overlay text-white">
 
-  return (
-    <div className="app-overlay text-white relative z-10">
-      <div className="app-overlay text-white min-h-screen bg-[url('/background.jpg')] bg-cover bg-center bg-fixed">
+    <Navbar
+      user={user}
+      onLogout={handleLogout}
+    />
 
-        <Navbar user={user} onLogout={handleLogout} />
-        <main className="pt-20"></main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/product/:id" element={<ProductId />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/products/:id" element={<CategoryDetail />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<Checkout />} />
-          {/* <Route path="/orders" element={<OrdersPage />} /> */}
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/orders" element={<OrdersListAdmin />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/update-password" element={<UpdatePassword />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/edit" element={<EditProfile />}/> </Routes>
-          </div>
-    </div>
-  );
+    <main className="pt-20">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/product/:id" element={<ProductId />} />
+        <Route path="/tasks" element={<Tasks />} />
+        <Route path="/products/:id" element={<CategoryDetail />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/orders" element={<OrdersListAdmin />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/update-password" element={<UpdatePassword />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/edit" element={<EditProfile />} />
+      </Routes>
+    </main>
+
+  </div>
+);
 }

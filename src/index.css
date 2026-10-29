@@ -3,75 +3,152 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ensure full height */
-html, body, #root {
-  height: 100%;
+/* ===========================
+   Base Layout
+=========================== */
+
+html,
+body,
+#root {
+  min-height: 100%;
 }
 
-/* Global background image */
 body {
   margin: 0;
   padding: 0;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
   color: white;
-  background-image: url("/background.jpg"); /* image must be in public/ */
+
+  background-image: url("/background.jpg");
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
   background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-/* Transparent overlay for the app */
+/* ===========================
+   Main App Overlay
+=========================== */
+
 .app-overlay {
   position: relative;
   min-height: 100vh;
 }
 
+/* Very light darkening */
 .app-overlay::before {
   content: "";
 
   position: fixed;
   inset: 0;
 
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.08);
 
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 
   pointer-events: none;
 
-  z-index: 0;
-}
-/* Semi-transparent card style */
-.card {
-  background-color: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(4px);
+  z-index: -1;
 }
 
-/* White button style */
-.btn-white {
-  background-color: rgba(255, 255, 255, 0.95);
-  color: #000;
-  font-weight: 600;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fadeIn {
-  animation: fadeIn 0.6s ease-out;
-}
+/* ===========================
+   Glass Cards
+=========================== */
 
 .glass-card {
   background: rgba(255, 255, 255, 0.08);
 
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-
   border: 1px solid rgba(255, 255, 255, 0.15);
 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 0 25px rgba(250, 204, 21, 0.1);
+    0 8px 24px rgba(0, 0, 0, 0.15),
+    0 0 15px rgba(250, 204, 21, 0.08);
+}
+
+/* ===========================
+   Old Card Support
+=========================== */
+
+.card {
+  background: rgba(0, 0, 0, 0.25);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===========================
+   Buttons
+=========================== */
+
+.btn-white {
+  background: rgba(255, 255, 255, 0.92);
+
+  color: black;
+
+  font-weight: 600;
+
+  transition: all 0.3s ease;
+}
+
+.btn-white:hover {
+  background: white;
+  transform: translateY(-2px);
+}
+
+/* ===========================
+   Animations
+=========================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* ===========================
+   Scrollbar
+=========================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(250, 204, 21, 0.6);
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(250, 204, 21, 0.9);
 }
