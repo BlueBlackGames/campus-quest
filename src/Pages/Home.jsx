@@ -111,20 +111,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-white">
-        <div
-  className="
-  fixed
-  top-40
-  left-10
-  w-64
-  h-64
-  bg-white/10
-  backdrop-blur-xl
-  border
-  border-white/20
-  z-[9999]
-  "
->
+        
 </div>
       {/* HERO */}
       <section className="max-w-7xl mx-auto px-4 py-16">
