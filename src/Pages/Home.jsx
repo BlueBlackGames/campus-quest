@@ -111,11 +111,36 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-white">
-
+        <div
+  className="
+  fixed
+  top-40
+  left-10
+  w-64
+  h-64
+  bg-white/10
+  backdrop-blur-xl
+  border
+  border-white/20
+  z-[9999]
+  "
+>
+</div>
       {/* HERO */}
       <section className="max-w-7xl mx-auto px-4 py-16">
 
-        <div className="glass-card rounded-3xl p-10 text-center">
+        <div
+  className="
+  rounded-3xl
+  p-10
+  text-center
+  bg-white/10
+  backdrop-blur-xl
+  border
+  border-white/20
+  shadow-xl
+  "
+>
 
           <h1 className="text-5xl md:text-7xl font-bold text-yellow-400">
             🎓 Campus Quest
@@ -160,7 +185,16 @@ export default function Home() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 
-          <div className="glass-card p-6 rounded-xl text-center">
+          <div className="
+p-6
+rounded-xl
+text-center
+bg-white/10
+backdrop-blur-xl
+border
+border-white/20
+shadow-xl
+">
             <div className="text-4xl">
               👨‍🎓
             </div>
@@ -172,7 +206,16 @@ export default function Home() {
             <p>Students</p>
           </div>
 
-          <div className="glass-card p-6 rounded-xl text-center">
+          <div className="
+p-6
+rounded-xl
+text-center
+bg-white/10
+backdrop-blur-xl
+border
+border-white/20
+shadow-xl
+">
             <div className="text-4xl">
               📌
             </div>
@@ -184,7 +227,16 @@ export default function Home() {
             <p>Tasks</p>
           </div>
 
-          <div className="glass-card p-6 rounded-xl text-center">
+          <div className="
+p-6
+rounded-xl
+text-center
+bg-white/10
+backdrop-blur-xl
+border
+border-white/20
+shadow-xl
+">
             <div className="text-4xl">
               ⭐
             </div>
@@ -196,7 +248,16 @@ export default function Home() {
             <p>Points Earned</p>
           </div>
 
-          <div className="glass-card p-6 rounded-xl text-center">
+          <div className="
+p-6
+rounded-xl
+text-center
+bg-white/10
+backdrop-blur-xl
+border
+border-white/20
+shadow-xl
+">
             <div className="text-4xl">
               🚀
             </div>
@@ -258,7 +319,15 @@ export default function Home() {
 
             <div
               key={job.id}
-              className="glass-card rounded-xl p-6"
+              className="
+rounded-xl
+p-6
+bg-white/10
+backdrop-blur-xl
+border
+border-white/20
+shadow-xl
+"
             >
 
               <h3 className="text-xl font-bold">
@@ -292,7 +361,15 @@ export default function Home() {
           🏆 Top Students
         </h2>
 
-        <div className="glass-card rounded-2xl overflow-hidden">
+        <div className="
+rounded-2xl
+overflow-hidden
+bg-white/10
+backdrop-blur-xl
+border
+border-white/20
+shadow-xl
+">
 
           {leaderboard.map((student, index) => (
 
@@ -323,7 +400,19 @@ export default function Home() {
 
       <section className="pb-12 px-4">
 
-        <div className="glass-card p-8 rounded-2xl max-w-5xl mx-auto text-center">
+        <div className="
+p-8
+rounded-2xl
+max-w-5xl
+mx-auto
+text-center
+bg-white/10
+backdrop-blur-xl
+border
+border-white/20
+shadow-xl
+"
+>
 
           <h2 className="text-3xl font-bold text-yellow-400">
             Why Campus Quest?
