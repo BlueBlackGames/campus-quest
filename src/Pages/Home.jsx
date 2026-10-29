@@ -112,7 +112,6 @@ export default function Home() {
   return (
     <div className="min-h-screen text-white">
         
-</div>
       {/* HERO */}
       <section className="max-w-7xl mx-auto px-4 py-16">
 
