@@ -14,19 +14,19 @@ export default function Tasks() {
       id: 2,
       name: "Coding",
       icon: "💻",
-      desc: "Programming challenges and projects.",
+      desc: "Programming challenges and projects.(Currently Under Construction)",
     },
     {
       id: 3,
       name: "Campus Events",
       icon: "🎉",
-      desc: "Participate in workshops and competitions.",
+      desc: "Participate in workshops and competitions.(Currently Under Construction)",
     },
     {
       id: 4,
       name: "Freelancing",
       icon: "🚀",
-      desc: "Work for fellow students and earn rewards.",
+      desc: "Work for fellow students and earn rewards.(Currently Under Construction)",
     },
   ];
 

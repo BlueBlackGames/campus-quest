@@ -8,19 +8,14 @@ export default function Navbar({ user, onLogout }) {
   const profileImage =
     user?.user_metadata?.avatar_url ||
     `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      user?.email || "Student"
+      user?.email || "Student",
     )}&background=facc15&color=000000`;
 
   return (
     <nav className="w-full bg-black/40 backdrop-blur-md shadow-lg fixed top-0 z-50">
-
       <div className="max-w-7xl mx-auto px-4 flex justify-between h-16 items-center">
-
         {/* Logo */}
-        <Link
-          to="/"
-          className="flex items-center space-x-2"
-        >
+        <Link to="/" className="flex items-center space-x-2">
           <img
             src={`${import.meta.env.BASE_URL}logo.png`}
             alt="Campus Quest"
@@ -34,7 +29,6 @@ export default function Navbar({ user, onLogout }) {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8 text-white font-medium">
-
           <Link
             to="/"
             className="hover:text-yellow-400 transition duration-300"
@@ -49,6 +43,10 @@ export default function Navbar({ user, onLogout }) {
             Tasks
           </Link>
 
+          <Link to="/peer-review" className="hover:text-yellow-400 transition">
+            Peer Review
+          </Link>
+
           <Link
             to="/profile"
             className="hover:text-yellow-400 transition duration-300"
@@ -57,17 +55,22 @@ export default function Navbar({ user, onLogout }) {
           </Link>
 
           <Link
+            to="/leaderboard"
+            className="hover:text-yellow-400 transition duration-300"
+          >
+            Leaderboard
+          </Link>
+
+          <Link
             to="/contact"
             className="hover:text-yellow-400 transition duration-300"
           >
             Contact
           </Link>
-
         </div>
 
         {/* Desktop Right Section */}
         <div className="hidden md:flex items-center gap-4">
-
           {user ? (
             <>
               <img
@@ -96,12 +99,10 @@ export default function Navbar({ user, onLogout }) {
               Login
             </Link>
           )}
-
         </div>
 
         {/* Mobile Section */}
         <div className="md:hidden flex items-center gap-3">
-
           {user && (
             <img
               src={profileImage}
@@ -119,7 +120,6 @@ hover:scale-105
 transition
 duration-300
 "
-
             />
           )}
 
@@ -129,9 +129,7 @@ duration-300
           >
             {isOpen ? "✖" : "☰"}
           </button>
-
         </div>
-
       </div>
 
       {/* Mobile Menu */}
@@ -141,7 +139,6 @@ duration-300
         }`}
       >
         <div className="bg-black/70 backdrop-blur-md text-white px-4 py-4 space-y-3">
-
           <Link
             to="/"
             onClick={() => setIsOpen(false)}
@@ -158,6 +155,14 @@ duration-300
             Tasks
           </Link>
 
+          <Link
+            to="/peer-review"
+            onClick={() => setIsOpen(false)}
+            className="block hover:text-yellow-400"
+          >
+            Peer Review
+          </Link>
+
           {user && (
             <Link
               to="/profile"
@@ -167,6 +172,13 @@ duration-300
               Profile
             </Link>
           )}
+          <Link
+            to="/leaderboard"
+            onClick={() => setIsOpen(false)}
+            className="block hover:text-yellow-400"
+          >
+            Leaderboard
+          </Link>
 
           <Link
             to="/contact"
@@ -201,10 +213,8 @@ duration-300
               Login
             </Link>
           )}
-
         </div>
       </div>
-
     </nav>
   );
 }

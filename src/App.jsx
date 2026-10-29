@@ -16,6 +16,10 @@ import OrdersListAdmin from "./Pages/Admin/OrdersList"; // admin orders
 import Tasks from "./Pages/Tasks";
 import Profile from "./Pages/Profile";
 import EditProfile from "./Pages/EditProfile";
+import Assignments from "./Pages/Assignments";
+import Leaderboard from "./Pages/Leaderboard";
+import PeerReview from "./Pages/PeerReview";
+import ComingSoon from "./Pages/ComingSoon";
 //import OrdersPage from "./Pages/OrdersPage"; // optional: user orders
 
 export default function App() {
@@ -26,38 +30,32 @@ export default function App() {
       setUser(data.session?.user ?? null);
     });
 
-    const { data: listener } =
-supabase.auth.onAuthStateChange(
-async (_event, session) => {
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        const currentUser = session?.user;
 
-  const currentUser = session?.user;
+        setUser(currentUser ?? null);
 
-  setUser(currentUser ?? null);
+        if (currentUser) {
+          await supabase.from("profiles").upsert({
+            id: currentUser.id,
 
-  if (currentUser) {
+            email: currentUser.email,
 
-    await supabase
-      .from("profiles")
-      .upsert({
-        id: currentUser.id,
+            full_name:
+              currentUser.user_metadata?.full_name ||
+              currentUser.user_metadata?.name ||
+              "",
 
-        email: currentUser.email,
-
-        full_name:
-          currentUser.user_metadata?.full_name ||
-          currentUser.user_metadata?.name ||
-          "",
-
-        avatar_url:
-          currentUser.user_metadata?.avatar_url ||
-
-          `https://ui-avatars.com/api/?name=${encodeURIComponent(
-            currentUser.email
-          )}`
-      });
-
-  }
-});
+            avatar_url:
+              currentUser.user_metadata?.avatar_url ||
+              `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                currentUser.email,
+              )}`,
+          });
+        }
+      },
+    );
 
     return () => listener.subscription.unsubscribe();
   }, []);
@@ -66,33 +64,34 @@ async (_event, session) => {
     await supabase.auth.signOut();
     setUser(null);
   };
-return (
-  <div className="app-overlay text-white">
+  return (
+    <div className="app-overlay text-white">
+      <Navbar user={user} onLogout={handleLogout} />
 
-    <Navbar
-      user={user}
-      onLogout={handleLogout}
-    />
-
-    <main className="pt-20">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/product/:id" element={<ProductId />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/products/:id" element={<CategoryDetail />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/orders" element={<OrdersListAdmin />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/update-password" element={<UpdatePassword />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/profile/edit" element={<EditProfile />} />
-      </Routes>
-    </main>
-
-  </div>
-);
+      <main className="pt-20">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/product/:id" element={<ProductId />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/tasks/assignments" element={<Assignments />} />
+          <Route path="/products/:id" element={<CategoryDetail />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/orders" element={<OrdersListAdmin />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/update-password" element={<UpdatePassword />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/edit" element={<EditProfile />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/peer-review" element={<PeerReview />} />
+          <Route path="/tasks/coding" element={<ComingSoon />} />
+          <Route path="/tasks/campusevents" element={<ComingSoon />} />
+          <Route path="/tasks/freelancing" element={<ComingSoon />} />
+        </Routes>
+      </main>
+    </div>
+  );
 }
