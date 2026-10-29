@@ -68,7 +68,7 @@ async (_event, session) => {
   };
 
   return (
-    <div className="app-overlay text-white">
+    <div className="app-overlay text-white relative z-10">
       <div className="app-overlay text-white min-h-screen bg-[url('/background.jpg')] bg-cover bg-center bg-fixed">
 
         <Navbar user={user} onLogout={handleLogout} />
