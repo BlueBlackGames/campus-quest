@@ -105,7 +105,7 @@ export default function Home() {
     {
       title: "Freelancing",
       icon: "🚀",
-      desc: "Work for students and earn points.",
+      desc: "Work for students and earn points.(currently under development)",
     },
   ];
 
