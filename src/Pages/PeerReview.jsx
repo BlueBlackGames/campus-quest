@@ -12,28 +12,21 @@ export default function PeerReview() {
 
   const fetchAssignments = async () => {
 
-    const {
-      data: { user }
-    } = await supabase.auth.getUser();
+  const { data, error } = await supabase
+    .from("assignments")
+    .select("*");
 
-    const { data, error } = await supabase
-      .from("assignments")
-      .select("*")
-      .eq("verified", false);
+  console.log("Assignments:", data);
+  console.log("Error:", error);
 
-    if (!error) {
+  if (error) {
+    console.error(error);
+  } else {
+    setAssignments(data || []);
+  }
 
-      const filtered =
-        data.filter(
-          (assignment) =>
-            assignment.user_id !== user.id
-        );
-
-      setAssignments(data || []);
-    }
-
-    setLoading(false);
-  };
+  setLoading(false);
+};
 
   const approveAssignment = async (
     assignment
@@ -201,7 +194,9 @@ export default function PeerReview() {
           mt-10
           "
         >
-
+          <p className="text-center text-white mt-6">
+  Assignments Found: {assignments.length}
+</p>
           {assignments.map(
             (assignment) => (
 
