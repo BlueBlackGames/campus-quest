@@ -29,7 +29,7 @@ export default function PeerReview() {
             assignment.user_id !== user.id
         );
 
-      setAssignments(filtered);
+      setAssignments(data || []);
     }
 
     setLoading(false);
