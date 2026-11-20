@@ -3,7 +3,38 @@ import { supabase } from "../supabaseClient";
 
 export default function PeerReview() {
 
-  const [assignments, setAssignments] = useState([]);
+  const [assignments] = useState([
+  {
+    id: 1,
+    title: "DBMS Assignment Unit 3",
+    description: "Normalization Questions",
+    pages: 5,
+    points: 7,
+    verification_count: 1,
+    file_url:
+      "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+  },
+  {
+    id: 2,
+    title: "Operating Systems Notes",
+    description: "CPU Scheduling and Deadlocks",
+    pages: 8,
+    points: 10,
+    verification_count: 2,
+    file_url:
+      "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+  },
+  {
+    id: 3,
+    title: "Java OOP Assignment",
+    description: "Inheritance and Polymorphism",
+    pages: 3,
+    points: 3,
+    verification_count: 0,
+    file_url:
+      "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+  }
+]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
