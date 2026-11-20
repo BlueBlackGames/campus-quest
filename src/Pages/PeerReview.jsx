@@ -9,25 +9,19 @@ export default function PeerReview() {
   useEffect(() => {
     fetchAssignments();
   }, []);
-
-  const fetchAssignments = async () => {
+const fetchAssignments = async () => {
 
   const { data, error } = await supabase
     .from("assignments")
     .select("*");
 
-  console.log("Assignments:", data);
-  console.log("Error:", error);
+  console.log("DATA:", data);
+  console.log("ERROR:", error);
 
-  if (error) {
-    console.error(error);
-  } else {
-    setAssignments(data || []);
-  }
+  setAssignments(data || []);
 
   setLoading(false);
 };
-
   const approveAssignment = async (
     assignment
   ) => {
